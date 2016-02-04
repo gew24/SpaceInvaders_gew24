@@ -11,7 +11,7 @@ import javax.swing.JButton;
 
 public class LoginGUI {
 
-	private JFrame frame;
+	private JFrame frmSpaceInvadersLogin;
 	public JTextField txtLoginEmail;
 	public JTextField txtLoginPassword;
 
@@ -23,7 +23,7 @@ public class LoginGUI {
 			public void run() {
 				try {
 					LoginGUI window = new LoginGUI();
-					window.frame.setVisible(true);
+					window.frmSpaceInvadersLogin.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -42,42 +42,43 @@ public class LoginGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmSpaceInvadersLogin = new JFrame();
+		frmSpaceInvadersLogin.setTitle("Space Invaders Login");
+		frmSpaceInvadersLogin.setBounds(100, 100, 450, 300);
+		frmSpaceInvadersLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSpaceInvadersLogin.getContentPane().setLayout(null);
 		
 		JLabel lblLoginEmail = new JLabel("Email:");
 		lblLoginEmail.setBounds(49, 60, 56, 16);
-		frame.getContentPane().add(lblLoginEmail);
+		frmSpaceInvadersLogin.getContentPane().add(lblLoginEmail);
 		
 		JLabel lblLoginPassword = new JLabel("Password:");
 		lblLoginPassword.setBounds(45, 113, 81, 16);
-		frame.getContentPane().add(lblLoginPassword);
+		frmSpaceInvadersLogin.getContentPane().add(lblLoginPassword);
 		
 		txtLoginEmail = new JTextField();
 		txtLoginEmail.setBounds(155, 57, 149, 22);
-		frame.getContentPane().add(txtLoginEmail);
+		frmSpaceInvadersLogin.getContentPane().add(txtLoginEmail);
 		txtLoginEmail.setColumns(10);
 		
 		txtLoginPassword = new JTextField();
 		txtLoginPassword.setBounds(155, 110, 149, 22);
-		frame.getContentPane().add(txtLoginPassword);
+		frmSpaceInvadersLogin.getContentPane().add(txtLoginPassword);
 		txtLoginPassword.setColumns(10);
 		
 		JButton btnRegister = new JButton("Register");
-		btnRegister.setBounds(43, 198, 97, 25);
-		frame.getContentPane().add(btnRegister);
-		//btnRegister.addActionListener(new BtnRegisterListener());
+		btnRegister.setBounds(34, 198, 97, 25);
+		frmSpaceInvadersLogin.getContentPane().add(btnRegister);
+		btnRegister.addActionListener(new BtnRegisterListener());
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.setBounds(155, 198, 97, 25);
-		frame.getContentPane().add(btnLogin);
+		frmSpaceInvadersLogin.getContentPane().add(btnLogin);
 		btnLogin.addActionListener(new BtnLoginListener());
 		
 		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(267, 198, 97, 25);
-		frame.getContentPane().add(btnCancel);
+		btnCancel.setBounds(280, 198, 97, 25);
+		frmSpaceInvadersLogin.getContentPane().add(btnCancel);
 		btnCancel.addActionListener(new BtnCancelListener());
 	}
 	
@@ -111,9 +112,17 @@ public class LoginGUI {
 	private class BtnLoginListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e){
-			new User();
-			String email = txtLoginEmail.getText();
-			String password = txtLoginPassword.getText();
+			new User(txtLoginEmail.getText(),txtLoginPassword.getText());
 		}
+	}
+	private class BtnRegisterListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e){
+			
+			RegistrationGUI rg = new RegistrationGUI();
+			rg.frmSpaceinvadersResigstration.setVisible(true);
+			
+	}
+		
 	}
 }

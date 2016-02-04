@@ -1,6 +1,7 @@
 package edu.pitt.is1017.spaceinvaders;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -13,110 +14,71 @@ import javax.swing.JOptionPane;
 
 
 public class User {
-	
-	LoginGUI lg = new LoginGUI();
-	RegistrationGUI rg = new RegistrationGUI(); 
-	
-	
 	private int userID;
 	private String lastName, firstName, email, password;
 	private boolean loggedIn;
 	
 	//default constructor
-	public User(){
+	public User(int userID){
 		userID = 1;
 		email = "generic@pitt.edu";
 		password = "tester123";
 	}
 	
-	//constructor
-	public User(int id, String txtEmail, String txtPassword){
-		userID = id;
-		email = txtEmail;
-		password = txtPassword;
-	}
-	
-	public User(int id, String firstName, String lastName, String email, String password){
-		
-	}
-	
-
-	public int getUserID() {
-		return userID;
-	}
-
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-	public static void main(String[] args){
+	//constructor for login 
+	public User(String txtEmail, String txtPassword){
 		DbUtilities db = new DbUtilities();
 		
-		String lastName, firstName, email, password;
-		/*
-		String sql = "INSERT INTO users (lastName, firstName, email, password)";
-		sql = sql + "VALUES('" + lastName + "','" + firstName +"','" + email +"','" + "'MD5('" + password + "'))";
-	*/
-		//System.out.println(sql);
+		String sql = "SELECT * FROM users WHERE email = " + email + " AND password = " + password + ";";//database select statement
 		
-		//db.executeQuery(sql);
-		 String sql = "SELECT * FROM users WHERE email = " + email + " AND password = " + password + ";";
-		try{
-			ResultSet rs = db.getResultSet(sql);
-			while (rs.next()){
+		ResultSet rs = db.getResultSet(sql);
+		
+		try {
+			if(rs.next()){
+				//set all user properties equal to properties from database
+				this.userID = rs.getInt("userID");
+				this.lastName = rs.getString("lastName");
+				this.firstName = rs.getString("firstName");
+				this.email = rs.getString("email");
+				this.password = rs.getString("password");
+				
 				System.out.print(rs.getInt("userID") + "\t");
 				System.out.print(rs.getString("lastName") + "\t");
 				System.out.print(rs.getString("firstName") + "\t");
 				System.out.print(rs.getString("email"));
 				System.out.println();
+				
+				JOptionPane.showConfirmDialog(null, "Welcome to Space Invaders!");
+				
 			}
-		}
-		catch(Exception ex){
-			//Handle here
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
+	
+	// constructor for registration
+	public User(String lastName, String firstName, String email, String password){
+		DbUtilities db = new DbUtilities();
+		
+		String sql = "INSERT INTO users (lastName, firstName, email, password)";//Insert statement
+		sql = sql + "VALUES('" + lastName + "','" + firstName +"','" + email +"'," + "MD5('" + password + "'))";
+		System.out.println(sql);
+		db.executeQuery(sql);
+	}
+	
+	public User(int id, String firstName, String lastName, String email, String password){
+		
+	}
+
 	/*private void close(){
 		try{
-			if (rs != null){
-				rs.close();
+			this.conn = null;{
+			this.conn.close();
 			}
-			if (sql != null){
-				sql.close();
-			}
-			if (db != null){
-				db.close();
-			}
-			}
+		}
 		catch(Exception e){
 			
 		}
+	
 	}*/
 }
-

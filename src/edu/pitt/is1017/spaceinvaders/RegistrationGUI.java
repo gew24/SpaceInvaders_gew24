@@ -122,7 +122,7 @@ public class RegistrationGUI {
 		//class to handle Resister button event and register new user
 		public class BtnRegisterListener implements ActionListener{
 			public void actionPerformed(ActionEvent arg0) {
-				new User();
+				new User(txtLastName.getText(),txtFirstName.getText(),txtEmail.getText(),txtPassword.getText());
 				
 			}
 		}
