@@ -121,7 +121,6 @@ public class LoginGUI {
 			
 			RegistrationGUI rg = new RegistrationGUI();
 			rg.frmSpaceinvadersResigstration.setVisible(true);
-			
 	}
 		
 	}

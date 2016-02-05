@@ -42,19 +42,36 @@ public class User {
 				this.email = rs.getString("email");
 				this.password = rs.getString("password");
 				
-				System.out.print(rs.getInt("userID") + "\t");
-				System.out.print(rs.getString("lastName") + "\t");
-				System.out.print(rs.getString("firstName") + "\t");
-				System.out.print(rs.getString("email"));
-				System.out.println();
-				
-				JOptionPane.showConfirmDialog(null, "Welcome to Space Invaders!");
-				
-			}
-		} catch (SQLException e) {
+				if(this.email != rs.getString("email")){
+					JOptionPane.showMessageDialog(null,"That Email is not on file.");
+					loggedIn = false;
+				}
+					else{
+						if(this.password != rs.getString("password")){
+							loggedIn = false;
+						}
+						else{
+							JOptionPane.showMessageDialog(null,"You are now logged in.");
+							loggedIn = true;
+					}
+					
+				}
+			}						
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
+		}			
+/*		try{
+			if(conn = null){
+			conn.close();
+			}
 		}
+		catch(Exception e){
+				
+		}
+	*/	
 	}
+	
 	
 	// constructor for registration
 	public User(String lastName, String firstName, String email, String password){
@@ -65,20 +82,5 @@ public class User {
 		System.out.println(sql);
 		db.executeQuery(sql);
 	}
-	
-	public User(int id, String firstName, String lastName, String email, String password){
-		
-	}
 
-	/*private void close(){
-		try{
-			this.conn = null;{
-			this.conn.close();
-			}
-		}
-		catch(Exception e){
-			
-		}
-	
-	}*/
 }
