@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
@@ -113,6 +114,7 @@ public class LoginGUI {
 		
 		public void actionPerformed(ActionEvent e){
 			new User(txtLoginEmail.getText(),txtLoginPassword.getText());
+			//JOptionPane.showMessageDialog(null, "You are logged in.");
 		}
 	}
 	private class BtnRegisterListener implements ActionListener{

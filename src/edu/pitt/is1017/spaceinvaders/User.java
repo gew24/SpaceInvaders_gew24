@@ -28,11 +28,11 @@ public class User {
 	//constructor for login 
 	public User(String txtEmail, String txtPassword){
 		DbUtilities db = new DbUtilities();
-		
-		String sql = "SELECT * FROM users WHERE email = " + email + " AND password = " + password + ";";//database select statement
+		// sql statement to query db for email and password
+		String sql = "SELECT * FROM users WHERE email = " + email + " AND password = MD5(" + password + ");";//database select statement
 		
 		ResultSet rs = db.getResultSet(sql);
-		
+		// try catch block to capture and compare result set against input
 		try {
 			if(rs.next()){
 				//set all user properties equal to properties from database
@@ -42,6 +42,19 @@ public class User {
 				this.email = rs.getString("email");
 				this.password = rs.getString("password");
 				
+				try{
+					
+					while (rs.next()){
+						System.out.print(rs.getInt("userID") + "\t");
+						System.out.print(rs.getString("lastName") + "\t");
+						System.out.print(rs.getString("firstName") + "\t");
+						System.out.print(rs.getString("email"));
+						System.out.println();
+					}
+				}
+				catch(Exception ex){
+					//Handle here
+				}
 				if(this.email != rs.getString("email")){
 					JOptionPane.showMessageDialog(null,"That Email is not on file.");
 					loggedIn = false;
@@ -61,15 +74,15 @@ public class User {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}			
-/*		try{
-			if(conn = null){
-			conn.close();
+		try{
+			if(rs != null){
+			rs.close();
 			}
 		}
 		catch(Exception e){
 				
 		}
-	*/	
+		
 	}
 	
 	
