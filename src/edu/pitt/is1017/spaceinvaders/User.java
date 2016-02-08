@@ -50,26 +50,25 @@ public class User {
 						System.out.print(rs.getString("firstName") + "\t");
 						System.out.print(rs.getString("email"));
 						System.out.println();
+						
+
+						while(this.email == rs.getString("email")){			
+							if(this.password != rs.getString("MD5(password)")){
+								loggedIn = false;
+							}
+							else{
+								
+								loggedIn = true;
+							}		
+						}
 					}
+					JOptionPane.showMessageDialog(null, "You are logged in");
 				}
 				catch(Exception ex){
-					//Handle here
+					JOptionPane.showMessageDialog(null,"connection failed");
 				}
-				if(this.email != rs.getString("email")){
-					JOptionPane.showMessageDialog(null,"That Email is not on file.");
-					loggedIn = false;
-				}
-					else{
-						if(this.password != rs.getString("password")){
-							loggedIn = false;
-						}
-						else{
-							JOptionPane.showMessageDialog(null,"You are now logged in.");
-							loggedIn = true;
-					}
-					
-				}
-			}						
+				
+			}									
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -82,7 +81,10 @@ public class User {
 		catch(Exception e){
 				
 		}
-		
+		if(loggedIn = true){
+
+			JOptionPane.showMessageDialog(null,"You are now logged in.");	
+		}
 	}
 	
 	
