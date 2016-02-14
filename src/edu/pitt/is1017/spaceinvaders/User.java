@@ -25,70 +25,77 @@ public class User {
 		password = "tester123";
 	}
 	
-	//constructor for login 
+	public int getUserID() {
+		return userID;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public boolean isLoggedIn() {
+		return loggedIn;
+	}
+
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
+
+	//constructor to login user
 	public User(String txtEmail, String txtPassword){
 		DbUtilities db = new DbUtilities();
-		// sql statement to query db for email and password
-		String sql = "SELECT * FROM users WHERE email = " + email + " AND password = MD5(" + password + ");";//database select statement
+		// gather data from LoginGUI
+		String email = txtEmail;
+		String password = txtPassword;
 		
-		ResultSet rs = db.getResultSet(sql);
-		// try catch block to capture and compare result set against input
-		try {
-			if(rs.next()){
-				//set all user properties equal to properties from database
-				this.userID = rs.getInt("userID");
-				this.lastName = rs.getString("lastName");
-				this.firstName = rs.getString("firstName");
-				this.email = rs.getString("email");
-				this.password = rs.getString("password");
-				
-				try{
-					
-					while (rs.next()){
-						System.out.print(rs.getInt("userID") + "\t");
-						System.out.print(rs.getString("lastName") + "\t");
-						System.out.print(rs.getString("firstName") + "\t");
-						System.out.print(rs.getString("email"));
-						System.out.println();
-						
+		// sql statement to query db for email and password
+		String sql = "SELECT * FROM users WHERE email = '" + email +  "' AND password = MD5('" + password + "');";
 
-						while(this.email == rs.getString("email")){			
-							if(this.password != rs.getString("MD5(password)")){
-								loggedIn = false;
-							}
-							else{
-								
-								loggedIn = true;
-							}		
-						}
-					}
-					JOptionPane.showMessageDialog(null, "You are logged in");
-				}
-				catch(Exception ex){
-					JOptionPane.showMessageDialog(null,"connection failed");
-				}
-				
-			}									
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}			
+		// try catch block test input against database to validate user credentials
 		try{
-			if(rs != null){
-			rs.close();
+			ResultSet rs = db.getResultSet(sql);
+			if(rs.next()){
+				loggedIn = true;
+				JOptionPane.showMessageDialog(null, "Congratulations! You are logged in." + email + password);
+			}
+			else{ 
+				loggedIn = false;
+				JOptionPane.showMessageDialog(null, "Login attempt failed.");
 			}
 		}
-		catch(Exception e){
-				
-		}
-		if(loggedIn = true){
-
-			JOptionPane.showMessageDialog(null,"You are now logged in.");	
+		catch(Exception ex){	
 		}
 	}
 	
-	
-	// constructor for registration
+	// constructor to register new user 
 	public User(String lastName, String firstName, String email, String password){
 		DbUtilities db = new DbUtilities();
 		
@@ -97,5 +104,4 @@ public class User {
 		System.out.println(sql);
 		db.executeQuery(sql);
 	}
-
 }
