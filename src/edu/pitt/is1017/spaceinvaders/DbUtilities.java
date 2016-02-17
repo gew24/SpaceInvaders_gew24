@@ -109,13 +109,10 @@ public class DbUtilities {
         }
         return false;
     }
-    public void closeConnection(ResultSet rs, Connection conn, Statement statement){
+    public void closeConnection(ResultSet rs, Connection conn){
     	try{
     		if(rs !=null){
     			rs.close();
-    		}
-    		if(statement !=null){
-    			statement.close();
     		}
     		if(conn != null){
 				conn.close();

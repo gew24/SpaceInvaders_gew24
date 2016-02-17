@@ -19,10 +19,10 @@ public class User {
 	private boolean loggedIn;
 	
 	//default constructor
-	public User(int userID){
-		userID = 1;
-		email = "generic@pitt.edu";
-		password = "tester123";
+	public User(int user, String mail, String pw){
+		userID = user;
+		email = mail;
+		password = pw;
 	}
 	
 	public int getUserID() {
@@ -84,7 +84,7 @@ public class User {
 			ResultSet rs = db.getResultSet(sql);
 			if(rs.next()){
 				loggedIn = true;
-				JOptionPane.showMessageDialog(null, "Congratulations! You are logged in." + email + password);
+				//JOptionPane.showMessageDialog(null, "Congratulations! You are logged in." + email + password);
 			}
 			else{ 
 				loggedIn = false;
@@ -93,14 +93,28 @@ public class User {
 		}
 		catch(Exception ex){	
 		}
+		if(loggedIn = true){
+			new Game();
+		}
 	}
 	
-	// constructor to register new user 
+	// constructor to register new user this constructor passes user entered information from RegistrationGUI to MySql
+	// to create a new row in the database for a new user account
 	public User(String lastName, String firstName, String email, String password){
 		DbUtilities db = new DbUtilities();
 		
-		String sql = "INSERT INTO users (lastName, firstName, email, password)";//Insert statement
+		String sql = "INSERT INTO users (lastName, firstName, email, password)";//Insert statement 
 		sql = sql + "VALUES('" + lastName + "','" + firstName +"','" + email +"'," + "MD5('" + password + "'))";
+		System.out.println(sql);
+		db.executeQuery(sql);
+	}
+	
+	// Updates new user information
+	public void saveUserInfo(){
+		DbUtilities db = new DbUtilities();
+		String sql ="UPDATE users SET email = '" + email +  //update statement for mysql
+				"', password = MD5('" + password + "') "
+						+ "WHERE userID = '" + userID + "';";
 		System.out.println(sql);
 		db.executeQuery(sql);
 	}
