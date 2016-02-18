@@ -31,7 +31,7 @@ import javax.swing.JPanel;
  * @author Kevin Glass
  */
 public class Game extends Canvas {
-	/** The stragey that allows us to use accelerate page flipping */
+	/** The strategy that allows us to use accelerate page flipping */
 	private BufferStrategy strategy;
 	/** True if the game is currently "running", i.e. the game loop is looping */
 	private boolean gameRunning = true;
@@ -237,7 +237,7 @@ public class Game extends Canvas {
 	 */
 	public void gameLoop() {
 		long lastLoopTime = System.currentTimeMillis();
-		
+		//ScoreTracker score = new ScoreTracker();
 		// keep looping round til the game ends
 		while (gameRunning) {
 			// work out how long its been since the last update, this

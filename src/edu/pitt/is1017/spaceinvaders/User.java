@@ -1,9 +1,6 @@
 package edu.pitt.is1017.spaceinvaders;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Scanner;
-
 import javax.swing.JOptionPane;
 
 /*
@@ -85,16 +82,19 @@ public class User {
 			if(rs.next()){
 				loggedIn = true;
 				//JOptionPane.showMessageDialog(null, "Congratulations! You are logged in." + email + password);
+				Game gm =new Game();
+				
+				// Start the main game loop, note: this method will not
+				// return until the game has finished running. Hence we are
+				// using the actual main thread to run the game.
+				gm.gameLoop();
 			}
-			else{ 
+			else{ // handles invalid user input 
 				loggedIn = false;
 				JOptionPane.showMessageDialog(null, "Login attempt failed.");
 			}
 		}
 		catch(Exception ex){	
-		}
-		if(loggedIn = true){
-			new Game();
 		}
 	}
 	
