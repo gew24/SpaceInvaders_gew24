@@ -14,7 +14,6 @@ public class LoginGUI {
 	private JFrame frmSpaceInvadersLogin;
 	public JTextField txtLoginEmail;
 	public JTextField txtLoginPassword;
-
 	/**
 	 * Launch the application.
 	 */
@@ -112,7 +111,18 @@ public class LoginGUI {
 	private class BtnLoginListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e){
-			new User(txtLoginEmail.getText(),txtLoginPassword.getText());
+			User user = new User(txtLoginEmail.getText(),txtLoginPassword.getText());
+			if(user.isLoggedIn()){
+				Thread t = new Thread("gameLaunchThread"){// Handles multi-threading problem
+					public void run(){
+						ScoreTracker scoretracker = new ScoreTracker(user);
+					
+						Game g = new Game(user, scoretracker);
+						g.gameLoop();
+					}
+				};
+				t.start();
+			}
 		}
 	}
 	private class BtnRegisterListener implements ActionListener{
@@ -121,7 +131,8 @@ public class LoginGUI {
 			
 			RegistrationGUI rg = new RegistrationGUI();
 			rg.frmSpaceinvadersResigstration.setVisible(true);
-	}
-		
-	}
+		}
+	}	
 }
+	
+

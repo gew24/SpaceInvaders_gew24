@@ -6,6 +6,8 @@ package edu.pitt.is1017.spaceinvaders;
  * @author Kevin Glass
  */
 public class ShotEntity extends Entity {
+	
+	
 	/** The vertical speed at which the players shot moves */
 	private double moveSpeed = -300;
 	/** The game in which this entity exists */
@@ -13,7 +15,7 @@ public class ShotEntity extends Entity {
 	/** True if this shot has been "used", i.e. its hit something */
 	private boolean used = false;
 	
-	/**
+			/**
 	 * Create a new shot from the player
 	 * 
 	 * @param game The game in which the shot has been created
@@ -25,7 +27,6 @@ public class ShotEntity extends Entity {
 		super(sprite,x,y);
 		
 		this.game = game;
-		
 		dy = moveSpeed;
 	}
 
@@ -38,10 +39,13 @@ public class ShotEntity extends Entity {
 		// proceed with normal move
 		super.move(delta);
 		
-		// if we shot off the screen, remove ourselfs
+		// if we shot off the screen, remove ourselves
 		if (y < -100) {
 			game.removeEntity(this);
-		}
+			game.point(-1);
+		 //*****************************************************************************	
+			//this is where score tracker needs to be implemented to subtract points
+		}//*****************************************************************************
 	}
 	
 	/**
@@ -51,10 +55,12 @@ public class ShotEntity extends Entity {
 	 * @parma other The other entity with which we've collided
 	 */
 	public void collidedWith(Entity other) {
+			
 		// prevents double kills, if we've already hit something,
 		// don't collide
 		if (used) {
 			return;
+			
 		}
 		
 		// if we've hit an alien, kill it!
@@ -62,10 +68,14 @@ public class ShotEntity extends Entity {
 			// remove the affected entities
 			game.removeEntity(this);
 			game.removeEntity(other);
-			
+			game.point(1);
+			//***************************************************************************
+			//this is where score tracker needs to be implemented to add points
+			//***************************************************************************
 			// notify the game that the alien has been killed
 			game.notifyAlienKilled();
 			used = true;
+			
 		}
 	}
 }

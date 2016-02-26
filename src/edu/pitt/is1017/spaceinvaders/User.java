@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 
 public class User {
-	private int userID;
+	int userID;
 	private String lastName, firstName, email, password;
 	private boolean loggedIn;
 	
@@ -81,13 +81,11 @@ public class User {
 			ResultSet rs = db.getResultSet(sql);
 			if(rs.next()){
 				loggedIn = true;
-				//JOptionPane.showMessageDialog(null, "Congratulations! You are logged in." + email + password);
-				Game gm =new Game();
-				
-				// Start the main game loop, note: this method will not
-				// return until the game has finished running. Hence we are
-				// using the actual main thread to run the game.
-				gm.gameLoop();
+				this.userID = rs.getInt("userID");
+				this.lastName = rs.getString("lastName");
+				this.password = rs.getString("password");
+				this.email  = rs.getString("email");
+				this.firstName = rs.getString("firstName");
 			}
 			else{ // handles invalid user input 
 				loggedIn = false;
@@ -114,7 +112,7 @@ public class User {
 		DbUtilities db = new DbUtilities();
 		String sql ="UPDATE users SET email = '" + email +  //update statement for mysql
 				"', password = MD5('" + password + "') "
-						+ "WHERE userID = '" + userID + "';";
+						+ "WHERE userID = '" + this.userID + "';";
 		System.out.println(sql);
 		db.executeQuery(sql);
 	}

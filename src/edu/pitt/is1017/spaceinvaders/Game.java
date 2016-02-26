@@ -1,5 +1,5 @@
 package edu.pitt.is1017.spaceinvaders;
-
+//hackerrank.com
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -46,9 +46,11 @@ public class Game extends Canvas {
 	/** The time at which last fired a shot */
 	private long lastFire = 0;
 	/** The interval between our players shot (ms) */
-	private long firingInterval = 500;
+	private long firingInterval = 450;
 	/** The number of aliens left on the screen */
 	private int alienCount;
+	/** The point counter */
+	private int point;
 	
 	/** The message to display which waiting for a key press */
 	private String message = "";
@@ -62,11 +64,18 @@ public class Game extends Canvas {
 	private boolean firePressed = false;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
+	String userID;
+	int currentScore;
+	User user; 
+	public ScoreTracker scoretracker;
 	
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game() {
+	public Game(User inUser, ScoreTracker inScore) {
+		user = inUser;
+		scoretracker = inScore;
+		
 		// create a frame to contain our game
 		JFrame container = new JFrame("Space Invaders 101");
 		
@@ -112,6 +121,9 @@ public class Game extends Canvas {
 		// to see at startup
 		initEntities();
 	}
+    public void point(int p){
+    	scoretracker.recordScore(p);
+    }
 	
 	/**
 	 * Start a fresh game, this should clear out any old data and
@@ -139,8 +151,8 @@ public class Game extends Canvas {
 		
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		alienCount = 0;
-		for (int row=0;row<5;row++) {
-			for (int x=0;x<12;x++) {
+		for (int row=0;row<5;row++) {//changed from 5 to 7
+			for (int x=0;x<12;x++) {//changed from 12 to 14
 				Entity alien = new AlienEntity(this,"sprites/alien.gif",100+(x*50),(50)+row*30);
 				entities.add(alien);
 				alienCount++;
@@ -171,7 +183,14 @@ public class Game extends Canvas {
 	 * Notification that the player has died. 
 	 */
 	public void notifyDeath() {
-		message = "Oh no! They got you, try again?";
+		message = "Oh no! They got you, try again?" +
+		" your score is " + 
+		scoretracker.getCurrentScore() + 
+		" " + "The top score is"  + 
+		" " + scoretracker.getTopPlayerFName() +  
+		" " + scoretracker.getTopPlayerLName() + 
+		" " + scoretracker.getTopScore();
+		scoretracker.recordFinalScore(currentScore);
 		waitingForKeyPress = true;
 	}
 	
@@ -180,7 +199,7 @@ public class Game extends Canvas {
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Well done! You Win!";
+		message = "Well done! You Win! ";
 		waitingForKeyPress = true;
 	}
 	
@@ -188,11 +207,11 @@ public class Game extends Canvas {
 	 * Notification that an alien has been killed
 	 */
 	public void notifyAlienKilled() {
-		// reduce the alient count, if there are none left, the player has won!
-		alienCount--;
+		// reduce the alien count, if there are none left, the player has won!
 		
 		if (alienCount == 0) {
 			notifyWin();
+			
 		}
 		
 		// if there are still some aliens left then they all need to get faster, so
@@ -202,7 +221,7 @@ public class Game extends Canvas {
 			
 			if (entity instanceof AlienEntity) {
 				// speed up by 2%
-				entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.02);
+				entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.02);//changed from 1.02 to 1.05
 			}
 		}
 	}
@@ -237,7 +256,7 @@ public class Game extends Canvas {
 	 */
 	public void gameLoop() {
 		long lastLoopTime = System.currentTimeMillis();
-		//ScoreTracker score = new ScoreTracker();
+		
 		// keep looping round til the game ends
 		while (gameRunning) {
 			// work out how long its been since the last update, this
@@ -278,9 +297,11 @@ public class Game extends Canvas {
 					
 					if (me.collidesWith(him)) {
 						me.collidedWith(him);
-						him.collidedWith(me);
+						him.collidedWith(me);//shot collision with alien					
 					}
+					
 				}
+				
 			}
 			
 			// remove any entity that has been marked for clear up
@@ -293,7 +314,7 @@ public class Game extends Canvas {
 			if (logicRequiredThisLoop) {
 				for (int i=0;i<entities.size();i++) {
 					Entity entity = (Entity) entities.get(i);
-					entity.doLogic();
+					entity.doLogic();// this makes the aliens stay on the screen
 				}
 				
 				logicRequiredThisLoop = false;
@@ -310,11 +331,11 @@ public class Game extends Canvas {
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
 			g.dispose();
-			strategy.show();
+			strategy.show();// makes visible
 			
 			// resolve the movement of the ship. First assume the ship 
 			// isn't moving. If either cursor key is pressed then
-			// update the movement appropraitely
+			// update the movement appropriately
 			ship.setHorizontalMovement(0);
 			
 			if ((leftPressed) && (!rightPressed)) {
@@ -323,8 +344,7 @@ public class Game extends Canvas {
 				ship.setHorizontalMovement(moveSpeed);
 			}
 			
-			// if we're pressing fire, attempt to fire
-			if (firePressed) {
+			if (firePressed) {//watching for spacebar implement scoring here
 				tryToFire();
 			}
 			
@@ -342,8 +362,8 @@ public class Game extends Canvas {
 	 * continue)
 	 * 
 	 * This has been implemented as an inner class more through 
-	 * habbit then anything else. Its perfectly normal to implement
-	 * this as seperate class if slight less convienient.
+	 * habit then anything else. Its perfectly normal to implement
+	 * this as separate class if slight less convenient.
 	 * 
 	 * @author Kevin Glass
 	 */
@@ -439,12 +459,11 @@ public class Game extends Canvas {
 	 * 
 	 * @param argv The arguments that are passed into our game
 	 */
-	public static void main(String argv[]) {
-		Game g =new Game();
-
+	/*public static void main(String argv[]) {
+		Game g = new Game();
 		// Start the main game loop, note: this method will not
 		// return until the game has finished running. Hence we are
 		// using the actual main thread to run the game.
 		g.gameLoop();
-	}
+	}*/
 }
