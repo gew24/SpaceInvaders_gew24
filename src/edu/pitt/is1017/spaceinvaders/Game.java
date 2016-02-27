@@ -1,5 +1,5 @@
 package edu.pitt.is1017.spaceinvaders;
-//hackerrank.com
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -46,7 +46,7 @@ public class Game extends Canvas {
 	/** The time at which last fired a shot */
 	private long lastFire = 0;
 	/** The interval between our players shot (ms) */
-	private long firingInterval = 450;
+	private long firingInterval = 500;
 	/** The number of aliens left on the screen */
 	private int alienCount;
 	/** The point counter */
