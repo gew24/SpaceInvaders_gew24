@@ -42,7 +42,7 @@ public class ShotEntity extends Entity {
 		// if we shot off the screen, remove ourselves
 		if (y < -100) {
 			game.removeEntity(this);
-			game.point(-1);
+			game.point(-1);//gew
 		 //*****************************************************************************	
 			//this is where score tracker needs to be implemented to subtract points
 		}//*****************************************************************************
@@ -68,7 +68,7 @@ public class ShotEntity extends Entity {
 			// remove the affected entities
 			game.removeEntity(this);
 			game.removeEntity(other);
-			game.point(1);
+			game.point(1);//gew
 			//***************************************************************************
 			//this is where score tracker needs to be implemented to add points
 			//***************************************************************************

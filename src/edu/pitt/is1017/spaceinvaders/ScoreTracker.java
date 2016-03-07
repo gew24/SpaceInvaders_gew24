@@ -110,12 +110,12 @@ public class ScoreTracker {
 			ResultSet rs = db.getResultSet(sql);
 			if(rs.next()){
 				this.highestScore = rs.getInt("highestScore");
-				JOptionPane.showMessageDialog(null, "high score = " + getHighestScore());			
+				//JOptionPane.showMessageDialog(null, "high score = " + getHighestScore());			
 			}
 		}
 		catch(Exception ex){	
 			
-		}
+		}	
 	}
 	
 	//RecordScore method
@@ -144,19 +144,18 @@ public class ScoreTracker {
 					  + highestScore + "," + user.userID + ", now());";
 		db.executeQuery(sql);	
 	}
-	public void topHighScore(){
+	public void topHighScore(String topPlayerFName, String topPlayerLName, int topScore){
 		DbUtilities db = new DbUtilities();
 		String sql = "SELECT lastName, firstName, MAX(scoreValue) FROM finalscores JOIN users ON fk_userID = userID GROUP BY lastName, firstName ORDER BY MAX(scoreValue) DESC LIMIT 1;";
 		try{
 			ResultSet rs = db.getResultSet(sql);
 			if(rs.next()){
-				topScore = rs.getInt("scoreValue");
-				topPlayerFName = rs.getString("firstName");
-				topPlayerLName = rs.getString("lastName");	
-				//System.out.println("high score = " + topPlayerFName + " " + topPlayerLName + " " + topScore);
+				this.topScore = rs.getInt("MAX(scoreValue)");
+				this.topPlayerFName = rs.getString("firstName");
+				this.topPlayerLName = rs.getString("lastName");	
 			}
 		}
-		catch(Exception ex){	
+		catch(Exception ex){	// displays when we can't access the information in the database
 			JOptionPane.showMessageDialog(null,"no data to display");
 			
 		}

@@ -66,6 +66,8 @@ public class Game extends Canvas {
 	private boolean logicRequiredThisLoop = false;
 	String userID;
 	int currentScore;
+	int topScore;
+	private String topPlayerFName, topPlayerLName;
 	User user; 
 	public ScoreTracker scoretracker;
 	
@@ -191,6 +193,7 @@ public class Game extends Canvas {
 		" " + scoretracker.getTopPlayerLName() + 
 		" " + scoretracker.getTopScore();
 		scoretracker.recordFinalScore(currentScore);
+		scoretracker.topHighScore(topPlayerFName, topPlayerLName, topScore);
 		waitingForKeyPress = true;
 	}
 	
@@ -199,7 +202,9 @@ public class Game extends Canvas {
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Well done! You Win! ";
+		message = "Well done! You Win! " + 
+				scoretracker.getCurrentScore();
+		//scoretracker.ScoreTracker();
 		waitingForKeyPress = true;
 	}
 	
@@ -208,7 +213,7 @@ public class Game extends Canvas {
 	 */
 	public void notifyAlienKilled() {
 		// reduce the alien count, if there are none left, the player has won!
-		
+		alienCount --;
 		if (alienCount == 0) {
 			notifyWin();
 			
@@ -325,7 +330,7 @@ public class Game extends Canvas {
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+				g.drawString("Press any key to begin! " + "Your Highest Score =  " +  scoretracker.getHighestScore(),(600-g.getFontMetrics().stringWidth("Press any key"))/2,300);
 			}
 			
 			// finally, we've completed drawing so clear up the graphics

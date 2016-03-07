@@ -94,6 +94,7 @@ public class User {
 		}
 		catch(Exception ex){	
 		}
+		
 	}
 	
 	// constructor to register new user this constructor passes user entered information from RegistrationGUI to MySql
