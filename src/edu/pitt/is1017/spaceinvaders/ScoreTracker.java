@@ -146,7 +146,7 @@ public class ScoreTracker {
 	}
 	public void topHighScore(String topPlayerFName, String topPlayerLName, int topScore){
 		DbUtilities db = new DbUtilities();
-		String sql = "SELECT lastName, firstName, MAX(scoreValue) FROM finalscores JOIN users ON fk_userID = userID GROUP BY lastName, firstName ORDER BY MAX(scoreValue) DESC LIMIT 1;";
+		String sql = "SELECT lastName, firstName, MAX(scoreValue) FROM finalscores JOIN users ON fk_userID = userID GROUP BY lastName, firstName ORDER BY MAX(scoreValue) DESC LIMIT 5;";
 		try{
 			ResultSet rs = db.getResultSet(sql);
 			if(rs.next()){
